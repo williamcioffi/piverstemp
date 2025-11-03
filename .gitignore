@@ -1,0 +1,16 @@
+# windows stuff
+.~*
+~*
+
+# macos stuff
+.DS_store
+
+# r and studio stuff
+.Rhistory
+.Rapp.history
+.Rproj.user
+.Rproj.user/
+
+# danger
+rsconnect/
+.httr-oauth
