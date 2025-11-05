@@ -1,10 +1,14 @@
 ---
-title: "gettemp"
-format: html
-editor: visual
+title: "water temp at 8656483"
+date: today
+format: 
+  html:
+    code-fold: true
 ---
 
-## Set up the API string
+# get water temp at the beaufort noaa station 8656483
+
+## set up api string
 
 ```{r}
 # string parts
@@ -54,7 +58,7 @@ apistring <- paste0(
 )
 ```
 
-# load the data
+## load data from api
 
 ```{r}
 dat <- read.table(apistring, header = TRUE, sep = ',', stringsAsFactors = FALSE)
@@ -73,8 +77,9 @@ dat$datetime_POSIX <- as.POSIXct(dat$Date.Time, format = dateformat)
 dat$datetime_datenum <- as.numeric(dat$datetime_POSIX)
 ```
 
-# make a quick plot
+## make a quick plot
 
 ```{r}
 plot(dat$datetime_POSIX, dat$Water.Temperature, type = 'l')
+abline(h = 60, lty = 2, lwd = 2, col = "purple")
 ```
