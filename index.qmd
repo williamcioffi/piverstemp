@@ -6,7 +6,7 @@ format:
     code-fold: true
 ---
 
-# get water temp at the beaufort noaa station 8656483
+# get water temp at the dml noaa station 8656483
 
 ## set up api string
 
