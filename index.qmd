@@ -8,6 +8,10 @@ format:
 
 # get water temp at the dml noaa station 8656483
 
+## changelog
+
+- 2025-11-07  reduced to 15 day history for carlity
+
 ## set up api string
 
 ```{r}
@@ -35,9 +39,9 @@ STATION <- "8656483"
 PRODUCT <- "water_temperature"
 APPLICATION <- "NOS.COOPS.TAC.PHYSOCEAN"
 
-# grab the current date to get the last 30 days
+# grab the current date to get the last 15 days
 curdate <- Sys.Date()
-dateback30 <- curdate - 30
+dateback30 <- curdate - 15
 
 # format the begin and end dates
 BEGINDATE <- format(dateback30, "%Y%m%d")
