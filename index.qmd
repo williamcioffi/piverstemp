@@ -89,5 +89,5 @@ Broken line indicates 60°F, red points are below this line.
 plot(dat$datetime_POSIX, dat$Water.Temperature, type = 'l')
 abline(h = 60, lty = 2, lwd = 2, col = "purple")
 dese <- which(dat$Water.Temperature < 60)
-points(dat$datetime_POSIX[dese], dat$Water.Temperature[dese], col = "red", pch = 16)
+points(dat$datetime_POSIX[dese], dat$Water.Temperature[dese], col = "red", pch = 16, cex = 0.5)
 ```
