@@ -86,7 +86,18 @@ dat$datetime_datenum <- as.numeric(dat$datetime_POSIX)
 Broken line indicates 60°F, red points are below this line.
 
 ```{r}
-plot(dat$datetime_POSIX, dat$Water.Temperature, type = 'l')
+# build the y axis range to always include 62 and go 2 degrees below the lowest just to make it look nice
+ylims <- range(c(62, dat$Water.Temperature)) + c(-2, 0)
+
+# make the plot
+plot(dat$datetime_POSIX, dat$Water.Temperature,
+  type = 'l',
+  ylim = ylims,
+  xlab = "",
+  ylab = expression("water temperature (" * degree * F * ")")
+)
+
+# add the annotations
 abline(h = 60, lty = 2, lwd = 2, col = "purple")
 dese <- which(dat$Water.Temperature < 60)
 points(dat$datetime_POSIX[dese], dat$Water.Temperature[dese], col = "red", pch = 16, cex = 0.5)
