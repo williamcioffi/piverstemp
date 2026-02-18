@@ -15,6 +15,9 @@ format:
 ## set up api string
 
 ```{r}
+# CONSTANTS
+NUMBEROFDAYSBACK <- 15
+
 # string parts
 GENERALHEADER <- "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?"
 PRODUCTHEAD <- "product="
@@ -41,7 +44,7 @@ APPLICATION <- "NOS.COOPS.TAC.PHYSOCEAN"
 
 # grab the current date to get the last 15 days
 curdate <- Sys.Date()
-dateback30 <- curdate - 15
+dateback30 <- curdate - NUMBEROFDAYSBACK
 
 # format the begin and end dates
 BEGINDATE <- format(dateback30, "%Y%m%d")
