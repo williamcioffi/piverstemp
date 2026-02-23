@@ -50,6 +50,10 @@ dateback30 <- curdate - NUMBEROFDAYSBACK
 BEGINDATE <- format(dateback30, "%Y%m%d")
 ENDDATE <- format(curdate, "%Y%m%d")
 
+# also make a seperate call to get data from 1 year ago
+BEGINDATE_historic <- paste0(as.numeric(format(dateback30, "%Y")) - 1, format(dateback30, "%m%d"))
+ENDDATE_historic <- paste0(as.numeric(format(curdate, "%Y")) - 1, format(curdate, "%m%d"))
+
 # build the string
 apistring <- paste0(
   GENERALHEADER,
@@ -63,12 +67,26 @@ apistring <- paste0(
   INTERVALHEAD, INTERVAL,
   FORMATHEAD, FORMAT
 )
+
+apistring_historic <- paste0(
+  GENERALHEADER,
+  PRODUCTHEAD, PRODUCT,
+  APPLICATIONHEAD, APPLICATION,
+  BEGINDATEHEAD, BEGINDATE_historic,
+  ENDDATEHEAD, ENDDATE_historic,
+  STATIONHEAD, STATION,
+  TIMEZONEHEAD, TIMEZONE,
+  UNITSHEAD, UNITS,
+  INTERVALHEAD, INTERVAL,
+  FORMATHEAD, FORMAT
+)
 ```
 
 ## load data from api
 
 ```{r}
 dat <- read.table(apistring, header = TRUE, sep = ',', stringsAsFactors = FALSE)
+dat_historic <- read.table(apistring_historic, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 
 # predict the date format
 if(INTERVAL == "h") {
@@ -80,17 +98,22 @@ if(INTERVAL == "h") {
 }
 
 # make a posix time note the format
-dat$datetime_POSIX <- as.POSIXct(dat$Date.Time, format = dateformat)
-dat$datetime_datenum <- as.numeric(dat$datetime_POSIX)
+dat$datetime_POSIX <- as.POSIXct(dat$Date.Time, format = dateformat, tz = "UTC")
+dat_historic$datetime_POSIX <- as.POSIXct(dat_historic$Date.Time, format = dateformat, "UTC")
+dat_historic$datetime_POSIX_match <- as.POSIXct(
+  paste0(as.numeric(format(dat_historic$datetime_POSIX, "%Y")) + 1, format(dat_historic$datetime_POSIX, "%m%d%H%M%S")),
+  format = "%Y%m%d%H%M%S",
+  tz = "UTC"
+)
 ```
 
 ## make a quick plot
 
-Broken line indicates 60°F, red points are below this line.
+Broken purple line indicates 60°F, red points are below this temperature. Grey broken line indicates last year on the same day.
 
 ```{r}
 # build the y axis range to always include 62 and go 2 degrees below the lowest just to make it look nice
-ylims <- range(c(62, dat$Water.Temperature)) + c(-2, 0)
+ylims <- range(c(62, dat$Water.Temperature, dat_historic$Water.Temperature)) + c(-2, 0)
 
 # make the plot
 plot(dat$datetime_POSIX, dat$Water.Temperature,
@@ -99,6 +122,8 @@ plot(dat$datetime_POSIX, dat$Water.Temperature,
   xlab = "",
   ylab = expression("water temperature (" * degree * F * ")")
 )
+
+lines(dat_historic$datetime_POSIX_match, dat_historic$Water.Temperature, col = "grey55", lty = 3)
 
 # add the annotations
 abline(h = 60, lty = 2, lwd = 2, col = "purple")
