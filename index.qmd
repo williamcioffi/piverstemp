@@ -113,7 +113,7 @@ Broken purple line indicates 60°F, red points are below this temperature. Grey 
 
 ```{r}
 # build the y axis range to always include 62 and go 2 degrees below the lowest just to make it look nice
-ylims <- range(c(62, dat$Water.Temperature, dat_historic$Water.Temperature)) + c(-2, 0)
+ylims <- range(c(62, dat$Water.Temperature, dat_historic$Water.Temperature), na.rm = TRUE) + c(-2, 0)
 
 # make the plot
 plot(dat$datetime_POSIX, dat$Water.Temperature,
