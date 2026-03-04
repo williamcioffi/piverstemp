@@ -8,10 +8,6 @@ format:
 
 # get water temp at the dml noaa station 8656483
 
-## changelog
-
-- 2025-11-07  reduced to 15 day history for carlity
-
 ## set up api string
 
 ```{r}
@@ -130,3 +126,15 @@ abline(h = 60, lty = 2, lwd = 2, col = "purple")
 dese <- which(dat$Water.Temperature < 60)
 points(dat$datetime_POSIX[dese], dat$Water.Temperature[dese], col = "red", pch = 16, cex = 0.5)
 ```
+
+
+## changelog
+
+- 2026-03-04  added historic temperatures (1 year ago for fun)
+- 2025-11-07  reduced to 15 day history for clarity
+
+
+## wishlist
+
+- show last years temps going forward 15 days from day as well?
+- CI
